@@ -14,10 +14,9 @@ uint8_t to_channels = 2;
 AnalogAudioStream analogInputStream; 
 A2DPStream a2dpOutputStream;                  
 
-// FilteredStream<int16_t, float> inputFiltered(analogInputStream, from_channels);
+FilteredStream<int16_t, float> inputFiltered(analogInputStream, from_channels);
 
-ChannelFormatConverterStreamT<sound_t> increaseChannelsStream(analogInputStream);
-// ChannelFormatConverterStreamT<sound_t> increaseChannelsStream(inputFiltered);
+ChannelFormatConverterStreamT<sound_t> increaseChannelsStream(inputFiltered);
 
 ConverterAutoCenter<sound_t> autoCenterConverter;
 // SilenceRemovalConverter
@@ -43,7 +42,7 @@ void setup(void) {
   cfgRx.channels = from_channels;
   analogInputStream.begin(cfgRx);
 
-  // inputFiltered.setFilter(0, new FIR<float>(coef));
+  inputFiltered.setFilter(0, new FIR<float>(coef));
   // inputFiltered.begin();
 
   increaseChannelsStream.begin(from_channels, to_channels);
